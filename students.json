@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "contact": "1234567890",
+        "dob": "1986-02-15"
+    },
+    {
+        "id": 2,
+        "name": "Jane Smith",
+        "contact": "9876543210",
+        "dob": "1986-03-05"
+    },
+    {
+        "id": 3,
+        "name": "Alice Johnson",
+        "contact": "5556667777",
+        "dob": "1987-01-20"
+    },
+    {
+        "id": 4,
+        "name": "Vibhour Jain",
+        "contact": "84666666",
+        "dob": "1980-01-20"
+    }
+]
