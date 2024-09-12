@@ -1,25 +1,36 @@
 from flask import Flask, jsonify, request
+from flask_httpauth import HTTPBasicAuth
 import json
 from datetime import datetime
 import os
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 
 # Define the path to your JSON file
 json_file_path = r'C:\Users\vibho\OneDrive\Desktop\VIBHOURJAIN\Vibhour\Learning\RestAPI\students.json'
 
 # Load students data from the JSON file
+students = []
 try:
     if os.path.exists(json_file_path):
         with open(json_file_path, 'r') as f:
-            students = json.load(f)  # Ensure 'students' is defined here
+            students = json.load(f)
         print(f"Loaded students data: {students}")
     else:
-        students = []  # Initialize as an empty list if the file doesn't exist
         print(f"File not found: {json_file_path}")
 except Exception as e:
-    students = []  # Initialize as an empty list in case of any error
     print(f"Error loading file: {e}")
+
+# Sample user data
+users = {
+    "admin": "password123"  # Username: Password
+}
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and users[username] == password:
+        return username
 
 # Function to filter students born between specific dates
 def filter_students_by_dob(students, start_date, end_date):
@@ -46,8 +57,8 @@ def get_student_by_id(students, student_id):
 
 # API to get students data
 @app.route('/students', methods=['GET'])
+@auth.login_required
 def get_students():
-    print("Current students data: ", students)
     # Retrieve query parameters
     year = request.args.get('year', type=int)
     student_id = request.args.get('id', type=int)
@@ -85,4 +96,4 @@ def get_students():
         return jsonify(students)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
